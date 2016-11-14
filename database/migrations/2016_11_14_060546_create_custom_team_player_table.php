@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCustomTeamUserTable extends Migration
+class CreateCustomTeamPlayerTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateCustomTeamUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('custom_team_user', function (Blueprint $table) {
+        Schema::create('custom_team_player', function (Blueprint $table) {
             $table->integer('custom_team_id')->unsigned();
-            $table->integer('user_id')->unsigned()->index('user_id');
+            $table->integer('player_id')->unsigned()->index('player_id');
             $table->timestamps();
 
-            $table->primary(['custom_team_id', 'user_id']);
+            $table->primary(['custom_team_id', 'player_id']);
             $table->foreign('custom_team_id')->references('id')->on('custom_teams')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('player_id')->references('id')->on('players')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -31,6 +31,6 @@ class CreateCustomTeamUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('custom_team_user');
+        Schema::dropIfExists('custom_team_player');
     }
 }

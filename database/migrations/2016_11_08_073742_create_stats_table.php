@@ -35,7 +35,7 @@ class CreateStatsTable extends Migration
             $table->decimal('faceoff_pct', 6, 4);
             $table->timestamps();
 
-            $table->foreign('player_id')->references('id')->on('players')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('player_id')->references('id')->on('players')->onUpdate('no action')->onDelete('no action');
         });
     }
 

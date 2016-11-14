@@ -23,7 +23,7 @@ class CreateTeamsTable extends Migration
             $table->string('conference');
             $table->timestamps();
 
-            $table->primary(['id', 'team_abbr']);
+            $table->primary(['id']);
         });
     }
 
