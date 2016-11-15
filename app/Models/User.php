@@ -13,4 +13,8 @@ class User extends Authenticatable
     ];
 
     protected $guarded = ['token'];
+
+    public function customTeams() {
+        return $this->hasMany('App\Models\CustomTeam');
+    }
 }
