@@ -15,17 +15,21 @@ class CreatePlayersTable extends Migration
     {
         Schema::create('players', function (Blueprint $table) {
             $table->integer('id')->unsigned()->index('id');
-            $table->string('first_name')->nullable();
-            $table->string('last_name')->nullable();
+            $table->string('first_name');
+            $table->string('last_name');
             $table->string('name')->index('name');
             $table->string('position');
+            $table->string('shoots');
             $table->tinyInteger('number')->unsigned()->nullable();
             $table->integer('team_id')->nullable();
             $table->tinyInteger('age')->unsigned()->nullable();
-            $table->smallInteger('weight')->unsigned();
-            $table->string('height');
-            $table->string('birthplace');
-            $table->string('birthdate');
+            $table->smallInteger('weight')->unsigned()->nullable();
+            $table->string('height')->nullable();
+            $table->string('birthplace')->nullable();
+            $table->string('birthdate')->nullable();
+            $table->integer('draft_year')->nullable();
+            $table->integer('draft_no')->nullable();
+            $table->integer('draft_round')->nullable();
             $table->timestamps();
 
             $table->primary('id');
