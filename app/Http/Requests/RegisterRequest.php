@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+
 class RegisterRequest extends FormRequest
 {
     /**
@@ -27,5 +28,10 @@ class RegisterRequest extends FormRequest
             'username' => 'required|unique:users,username',
             'password' => 'required|confirmed|min:8|alpha_dash'
         ];
+    }
+
+    public function response(array $errors)
+    {
+        return response()->json(['error' => $errors], 422);
     }
 }
