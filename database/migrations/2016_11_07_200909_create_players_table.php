@@ -22,6 +22,7 @@ class CreatePlayersTable extends Migration
             $table->string('shoots');
             $table->tinyInteger('number')->unsigned()->nullable();
             $table->integer('team_id')->nullable();
+            $table->string('team_abbr')->nullable();
             $table->tinyInteger('age')->unsigned()->nullable();
             $table->smallInteger('weight')->unsigned()->nullable();
             $table->string('height')->nullable();

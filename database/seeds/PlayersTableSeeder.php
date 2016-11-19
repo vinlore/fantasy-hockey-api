@@ -5,6 +5,7 @@ use Illuminate\Database\Seeder;
 use GuzzleHttp\Client as GuzzleHttpClient;
 
 use App\Models\Player;
+use App\Models\Team;
 
 class PlayersTableSeeder extends Seeder
 {
@@ -20,7 +21,11 @@ class PlayersTableSeeder extends Seeder
 
             $client = new GuzzleHttpClient();
 
-            $params = 'cayenneExp=seasonId=' . config('constants.SEASON_ID') . ' and gameTypeId=' . config('constants.REGULAR_SEASON');
+            $today = new \DateTime('now');
+            $nextYear = new \DateTime('+1 year');
+            $thisSeason = $today->format('Y') . $nextYear->format('Y');
+
+            $params = 'cayenneExp=seasonId=' . $thisSeason;
 
             $s_response = $client->get(config('constants.SKATERS_BIO_API'), ['query' => $params]);
             $g_response = $client->get(config('constants.GOALIES_BIO_API'), ['query' => $params]);
@@ -52,7 +57,14 @@ class PlayersTableSeeder extends Seeder
                     $player->draft_year = $data['playerDraftYear'];
                     $player->draft_no = $data['playerDraftOverallPickNo'];
                     $player->draft_round = $data['playerDraftRoundNo'];
+                    $player->number = $data['playerCurrentSweaterNumber'];
                     $player->age = $age;
+
+                    if ($data['playerTeamsPlayedFor']) {
+                        $team = Team::where('team_abbr', $data['playerTeamsPlayedFor'])->first();
+                        $player->team_abbr = $data['playerTeamsPlayedFor'];
+                        $player->team()->associate($team);
+                    }
 
                     $player->save();
                 }
