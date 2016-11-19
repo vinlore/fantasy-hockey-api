@@ -10,8 +10,20 @@ class Player extends Model
         return $this->belongsTo('App\Models\Team');
     }
 
-    public function stats() {
-        return $this->hasMany('App\Models\Stat');
+    public function statsYear() {
+        return $this->hasMany('App\Models\StatYear');
+    }
+
+    public function statsMonth() {
+        return $this->hasOne('App\Models\StatMonth');
+    }
+
+    public function statsBiweek() {
+        return $this->hasOne('App\Models\StatBiweek');
+    }
+
+    public function statsWeek() {
+        return $this->hasOne('App\Models\StatWeek');
     }
 
     public function customTeams() {
