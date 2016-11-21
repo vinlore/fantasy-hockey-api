@@ -1,14 +1,20 @@
 <?php 
 
+if (!defined('NHL_TEAMS')) {
+    define('NHL_TEAMS', 'https://statsapi.web.nhl.com/api/v1/');
+}
+
 if (!defined('NHL_PLAYERS')) {
     define('NHL_PLAYERS', 'http://www.nhl.com/stats/rest/');
 }
+
 
 return [
     'SEASON_ID' => '20162017',
     'REGULAR_SEASON' => '2',
     'PLAYOFFS' => '3',
-    'TEAMS_API_URL' => 'https://statsapi.web.nhl.com/api/v1/teams',
+    'TEAMS_API' => NHL_TEAMS . 'teams',
+    'TEAMS_STATS_API' => NHL_TEAMS . 'standings',
     'SKATERS_BIO_API' => NHL_PLAYERS . 'grouped/skaters/season/bios',
     'SKATERS_STATS_API' => NHL_PLAYERS . 'individual/skaters/basic/season/skatersummary',
     'SKATERS_STATS_API2' => NHL_PLAYERS . 'individual/skaters/basic/season/realtime',
