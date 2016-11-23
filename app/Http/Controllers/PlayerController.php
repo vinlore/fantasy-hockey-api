@@ -12,7 +12,27 @@ class PlayerController extends Controller
     public function index(Request $request)
     {
         try {
-            return Player::with('statsYear')->get();
+            $players = Player::all();
+
+            if (!$players) {
+                return response()->error('404', 'Players not found.');
+            }
+
+            if (!$request->years) {
+                $today = new \DateTime('now');
+                $nextYear = new \DateTime('+1 year');
+
+                $years = $today->format('Y') . $nextYear->format('Y');
+            } else {
+                $years = $request->years;
+            }
+
+            foreach ($players as $player) {
+                $player->setAttribute('stats', $player->statsYear()->where('years', $years)->first());
+            }
+
+            return $players;
+
         } catch (Exception $e) {
             return response()->error();
         }
