@@ -23,5 +23,5 @@ Route::group(['middleware' => ['api']], function () {
     Route::post('/auth/login', 'AuthenticateController@login');
 
     Route::resource('players', 'PlayerController', ['only' => ['index', 'show']]);
-    
+    Route::resource('teams', 'TeamController', ['only' => ['index', 'show']]);
 });
