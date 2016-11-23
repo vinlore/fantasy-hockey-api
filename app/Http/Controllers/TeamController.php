@@ -27,7 +27,13 @@ class TeamController extends Controller
                 return response()->error('404', 'Team not found.');
             }
 
-            return $team;
+            $players = $team->players()->get();
+            
+            foreach ($players as $player) {
+                $player->setAttribute('stats', $player->statsYear()->first());
+            }
+
+            return $team->setAttribute('players', $players);
         } catch (Exception $e) {
             return response()->error();
         }
