@@ -28,6 +28,7 @@ Route::group(['middleware' => ['api']], function () {
 
     Route::group(['middleware' => ['jwt.auth', 'jwt.refresh']], function () {
         Route::resource('custom-teams', 'CustomTeamController', ['except' => ['create', 'edit']]);
+        Route::post('custom-teams/{tid}/players/{pid}', 'CustomTeamController@addPlayer');
     });
     
 });

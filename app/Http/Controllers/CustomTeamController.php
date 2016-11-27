@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 
 use App\Models\CustomTeam;
 use App\Models\User;
+use App\Models\Player;
 
 class CustomTeamController extends Controller
 {
@@ -97,7 +98,7 @@ class CustomTeamController extends Controller
             $team = CustomTeam::find($id);
 
             if (!$team) {
-                return response()->error('404', 'Team Not Found');
+                return response()->error('404', 'team_not_found');
             }
 
             return $team->setAttribute('players', $team->players()->get());
@@ -131,7 +132,7 @@ class CustomTeamController extends Controller
 
             $team = CustomTeam::find($id);
             if (!$team) {
-                return response()->error('404', 'Team Not Found');
+                return response()->error('404', 'team_not_found');
             }
 
             $team->delete();
@@ -140,6 +141,32 @@ class CustomTeamController extends Controller
 
         } catch (Exception $e) {
             return response()->error($e);
+        }
+    }
+
+    public function addPlayer($teamId, $playerId)
+    {
+        try {
+
+            $team = CustomTeam::find($teamId);
+            if (!$team) {
+                return response()->error('404', 'team_not_found');
+            }
+
+            $player = Player::find($playerId);
+            if (!$player) {
+                return response()->error('404', 'player_not_found');
+            }
+
+            $team->players()->attach($player->id);
+
+            return response()->success();
+
+        } catch (\Exception $e) {
+            if ($e->errorInfo[0] == 23000) {
+                return response()->error('500', 'duplicate_player');
+            }
+            return response()->error($e->errorInfo);
         }
     }
 }
