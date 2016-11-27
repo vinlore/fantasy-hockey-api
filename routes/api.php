@@ -22,11 +22,12 @@ Route::group(['middleware' => ['api']], function () {
 
     Route::post('/auth/register', 'AuthenticateController@register');
     Route::post('/auth/login', 'AuthenticateController@login');
+    Route::get('/auth/refresh-token', ['middleware' => 'jwt.refresh', function () {}]);
 
     Route::resource('players', 'PlayerController', ['only' => ['index', 'show']]);
     Route::resource('teams', 'TeamController', ['only' => ['index', 'show']]);
 
-    Route::group(['middleware' => ['jwt.auth', 'jwt.refresh']], function () {
+    Route::group(['middleware' => ['jwt.auth']], function () {
         Route::resource('custom-teams', 'CustomTeamController', ['except' => ['create', 'edit']]);
         Route::post('custom-teams/{tid}/players/{pid}', 'CustomTeamController@addPlayer');
     });

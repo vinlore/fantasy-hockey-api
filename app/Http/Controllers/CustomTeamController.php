@@ -27,18 +27,8 @@ class CustomTeamController extends Controller
 
             return $user->customTeams()->get();
 
-        } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
-
-            return response()->error($e->getStatusCode(), 'token_expired');
-
-        } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
-
-            return response()->error($e->getStatusCode(), 'token_invalid');
-
-        } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
-
-            return response()->error($e->getStatusCode(), 'token_absent');
-
+        } catch (\Exception $e) {
+            return response()->error($e);
         }
     }
 
@@ -57,22 +47,6 @@ class CustomTeamController extends Controller
                 return response()->error(404, 'user_not_found');
             }
 
-        } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
-
-            return response()->error($e->getStatusCode(), 'token_expired');
-
-        } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
-
-            return response()->error($e->getStatusCode(), 'token_invalid');
-
-        } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
-
-            return response()->error($e->getStatusCode(), 'token_absent');
-
-        }
-
-        try {
-
             $team = new CustomTeam();
             $team->name = $request->name;
             $team->user()->associate($user->id);
@@ -80,7 +54,7 @@ class CustomTeamController extends Controller
             
             return $team;
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->error($e);
         }
     }
@@ -103,7 +77,7 @@ class CustomTeamController extends Controller
 
             return $team->setAttribute('players', $team->players()->get());
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->error();
         }
     }
@@ -139,7 +113,7 @@ class CustomTeamController extends Controller
 
             return response()->success();
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->error($e);
         }
     }
