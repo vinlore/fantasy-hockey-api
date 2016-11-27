@@ -11,6 +11,6 @@ class CustomTeam extends Model
     }
 
     public function players() {
-        return $this->hasMany('App\Models\Players');
+        return $this->belongsToMany('App\Models\Player', 'custom_team_player')->withTimestamps();
     }
 }
