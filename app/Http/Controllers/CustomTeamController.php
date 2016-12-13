@@ -22,7 +22,7 @@ class CustomTeamController extends Controller
             
             $user = \JWTAuth::parseToken()->authenticate();
             if (!$user) {
-                return response()->error(404, 'user_not_found');
+                return response('user_not_found', 404);
             }
 
             return $user->customTeams()->get();
@@ -44,7 +44,7 @@ class CustomTeamController extends Controller
             
             $user = \JWTAuth::parseToken()->authenticate();
             if (!$user) {
-                return response()->error(404, 'user_not_found');
+                return response('user_not_found', 404);
             }
 
             $team = new CustomTeam();
@@ -72,7 +72,7 @@ class CustomTeamController extends Controller
             $team = CustomTeam::find($id);
 
             if (!$team) {
-                return response()->error('404', 'team_not_found');
+                return response('team_not_found', 404);
             }
 
             return $team->setAttribute('players', $team->players()->get());
@@ -106,7 +106,7 @@ class CustomTeamController extends Controller
 
             $team = CustomTeam::find($id);
             if (!$team) {
-                return response()->error('404', 'team_not_found');
+                return response('team_not_found', 404);
             }
 
             $team->delete();
@@ -124,12 +124,12 @@ class CustomTeamController extends Controller
 
             $team = CustomTeam::find($teamId);
             if (!$team) {
-                return response()->error('404', 'team_not_found');
+                return response('team_not_found', 404);
             }
 
             $player = Player::find($playerId);
             if (!$player) {
-                return response()->error('404', 'player_not_found');
+                return response('player_not_found', 404);
             }
 
             $team->players()->attach($player->id);
@@ -138,7 +138,7 @@ class CustomTeamController extends Controller
 
         } catch (\Exception $e) {
             if ($e->errorInfo[0] == 23000) {
-                return response()->error('500', 'duplicate_player');
+                return response('duplicate_player', 500);
             }
             return response()->error($e->errorInfo);
         }
