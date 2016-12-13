@@ -69,8 +69,12 @@ class CustomTeamController extends Controller
     {
         try {
             
-            $team = CustomTeam::find($id);
+            $user = \JWTAuth::parseToken()->authenticate();
+            if (!$user) {
+                return response('user_not_found', 404);
+            }
 
+            $team = $user->customTeams()->where('id', $id)->first();
             if (!$team) {
                 return response('team_not_found', 404);
             }
