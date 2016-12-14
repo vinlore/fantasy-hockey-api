@@ -25,10 +25,10 @@ class CustomTeamController extends Controller
                 return response('user_not_found', 404);
             }
 
-            return $user->customTeams()->get();
+            return $user->customTeams()->with('players')->get();
 
         } catch (\Exception $e) {
-            return response()->error($e);
+            return response($e->errorInfo, 500);
         }
     }
 
@@ -55,7 +55,7 @@ class CustomTeamController extends Controller
             return $team;
 
         } catch (\Exception $e) {
-            return response()->error($e);
+            return response($e->errorInfo, 500);
         }
     }
 
@@ -82,7 +82,7 @@ class CustomTeamController extends Controller
             return $team->setAttribute('players', $team->players()->get());
 
         } catch (\Exception $e) {
-            return response()->error();
+            return response($e->errorInfo, 500);
         }
     }
 
@@ -118,11 +118,11 @@ class CustomTeamController extends Controller
             return response()->success();
 
         } catch (\Exception $e) {
-            return response()->error($e);
+            return response($e->errorInfo, 500);
         }
     }
 
-    public function addPlayer($teamId, $playerId)
+    public function add_player($teamId, $playerId)
     {
         try {
 
@@ -144,7 +144,32 @@ class CustomTeamController extends Controller
             if ($e->errorInfo[0] == 23000) {
                 return response('duplicate_player', 500);
             }
-            return response()->error($e->errorInfo);
+            return response($e->errorInfo, 500);
+        }
+    }
+
+    public function index_available($pid)
+    {
+        try {
+
+            $user = \JWTAuth::parseToken()->authenticate();
+            if (!$user) {
+                return response('user_not_found', 404);
+            }
+
+            $teams = $user->customTeams()->get();
+            $ignore_teams = [];
+            foreach($teams as $team) {
+                $t = $team->players()->wherePivot('player_id', '=', $pid)->first();
+                if ($t) {
+                    array_push($ignore_teams, $t->pivot->custom_team_id);
+                }
+            }
+            
+            return $user->customTeams()->whereNotIn('id', $ignore_teams)->get();
+
+        } catch (\Exception $e) {
+            return response($e, 500);
         }
     }
 }
